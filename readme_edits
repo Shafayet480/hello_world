@@ -1,0 +1,69 @@
+package TestNG;
+
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+public class PASSIONTEA {
+
+  public WebDriver driver;
+
+
+	@BeforeTest
+	public void openApplication()
+	{
+		System.setProperty("webdriver.chrome.driver" , "F:\\chromedriver.exe\\");//Chrome Driver Path
+		 driver = new ChromeDriver();
+	  String url = "http://www.practiceselenium.com";
+	 
+	    driver.manage().window().maximize();
+	    driver.get(url);
+	}
+	@Test(priority=0)
+	  public void copyright() {
+	  
+		String expectedresult = "Copyright Selenium Practice Website";
+		 String  sActualValue=driver.findElement(By.tagName("Body")).getText();
+		 org.testng.Assert.assertTrue(sActualValue.contains(expectedresult));
+	  }
+	
+	@Test(priority=1)
+	public void CheckThegreenTeaProduct(){
+		driver.findElement(By.linkText("Menu")).click();
+		System.out.println("Menu Clicked");
+		
+	}
+	@Test(priority=2)
+	public void Selectproduct(){
+		driver.findElement(By.xpath("//*[@id=\"wsb-button-00000000-0000-0000-0000-000451955160\"]/span")).click();
+		System.out.println("Green Tea Selected");
+	}
+	
+	@Test(priority=3)
+	public void OrderCartPage() throws AWTException{
+		driver.findElement(By.linkText("Menu")).click();
+		driver.findElement(By.linkText("Check Out")).click();
+		
+		driver.findElement(By.id("email")).sendKeys("email@email.com");
+		driver.findElement(By.id("name")).sendKeys("name");
+		driver.findElement(By.id("address")).sendKeys("address");
+		 Select payment = new Select(driver.findElement(By.id("card_type")));
+		 payment.selectByVisibleText("Visa");
+		 driver.findElement(By.id("card_number")).sendKeys("1234567899876");
+		 driver.findElement(By.id("cardholder_name")).sendKeys("moe");
+		 driver.findElement(By.id("verification_code")).sendKeys("123");
+		 Robot r=new Robot();
+		 r.keyPress(KeyEvent.VK_ENTER);
+		 
+		}
+	}
+	//@AfterTest
+	//driver.quit();
+
